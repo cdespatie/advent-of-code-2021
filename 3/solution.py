@@ -1,30 +1,23 @@
 def part1():
     binary = data()
-    gamma, epsilon = '', ''
-    mask = 0xFFF
+    gamma = ''
 
     for i in range(len(binary[0])):
         gamma += '1' if sum([int(x[i]) for x in binary]) > (len(binary) / 2) else '0'
 
-    return int(gamma, 2) * (int(gamma, 2) ^ mask)
+    return int(gamma, 2) * (int(gamma, 2) ^ 0xFFF)
 
 def part2():
-    binary = data()
-    oxygen, carbon = 0, 0
+    binary_ox = binary_c0 = data()
 
-    oxygen = filter_common_digit(binary, True)
-    carbon = filter_common_digit(binary, False)
+    for i in range(len(binary_ox[0])):
+        common_digit_ox = '1' if sum([int(x[i]) for x in binary_ox]) >= (len(binary_ox) / 2) else '0'
+        common_digit_c0 = '1' if sum([int(x[i]) for x in binary_c0]) >= (len(binary_c0) / 2) else '0'
 
-    return int(oxygen, 2) * int(carbon, 2)
+        binary_ox = [x for x in binary_ox if x[i] == common_digit_ox or len(binary_ox) == 1]
+        binary_c0 = [x for x in binary_c0 if x[i] != common_digit_c0 or len(binary_c0) == 1]
 
-def filter_common_digit(binary, even):
-    target_char, invert_char = ('1', '0') if even else ('0', '1')
-
-    for i in range(len(binary[0])):
-        common_digit = target_char if sum([int(x[i]) for x in binary]) >= (len(binary) / 2) else invert_char
-        binary = [x for x in binary if x[i] == common_digit]
-
-        if len(binary) == 1: return binary[0]
+    return int(binary_ox[0], 2) * int(binary_c0[0], 2)
 
 def data():
     return [line.rstrip() for line in open('input.txt', 'r')]
