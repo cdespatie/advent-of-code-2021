@@ -12,12 +12,12 @@ def part2():
     binary = data()
     oxygen, carbon = 0, 0
 
-    oxygen = get_common_digit(binary, True)
-    carbon = get_common_digit(binary, False)
+    oxygen = filter_common_digit(binary, True)
+    carbon = filter_common_digit(binary, False)
 
     return int(oxygen, 2) * int(carbon, 2)
 
-def get_common_digit(binary, even):
+def filter_common_digit(binary, even):
     target_char, invert_char = ('1', '0') if even else ('0', '1')
 
     for i in range(len(binary[0])):
